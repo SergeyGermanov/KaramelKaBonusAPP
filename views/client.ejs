@@ -1,0 +1,72 @@
+<%- include('partials/header')%>
+
+<script>
+     $(document).ready(function() {
+        $("#select").dropdown();
+      });
+  
+</script>
+
+<div class="ui container">
+  <div class="ui warning form segment">
+    <a href="/" class="ui orange ribbon label">Ввести новый номер</a>
+    <div class="ui warning huge message">
+      <div class="header"><%= data.name%></div>
+      <p class="ui sub header"><%= phNumber%></p>
+    </div>
+    <form action="/client" method="POST">
+      <div class="two fields">
+        <div class="field">
+          <label>Процент списания</label>
+          <div class="ui right labeled input">             
+          <input
+          type="number"
+          name="percent"
+          step="5"
+          min="10"
+          max="100"
+          placeholder="<%= data.percent%>%"
+          value="<%= data.percent%>"
+          id="percent"
+        />
+        <div class="ui basic label">
+            %
+          </div>
+          </div>
+        
+        </div>
+        <div class="field">
+            <label>Бонус равен</label>
+                <select name="bonusIndex" class="ui search dropdown" id="select">
+                    <%if(data.bonusIndex === 5){%>
+                    <option value="5">1 Бонус = 5 рублям</option>
+                    <option value="10">1 Бонус = 10 рублям</option>
+                    <%} else {%>
+                    <option value="10">1 Бонус = 10 рублям</option>
+                    <option value="5">1 Бонус = 5 рублям</option>
+                    <%}%>
+                  </select>
+          </div> 
+        </div>
+        <div class="field">
+            <input class="ui center aligned segment"
+            id="bonuses"
+            name="bonus"
+            type="text"
+            placeholder="<%= data.bonus%> рублей"
+            autocomplete="off"
+            maxlength="7"
+            size="10"
+            required
+          />
+          </div>
+          <div class="ui two buttons">
+            <button type="submit" id="withdraw" name="action" value="withdraw" class="ui basic green button">Списать</button>
+            <button type="submit" id="deposit" name="action" value="deposit" class="ui basic red button">Начислить</button>
+          </div>
+        </form>
+      </div>
+  </div>
+</div>
+
+<%- include('partials/footer')%>

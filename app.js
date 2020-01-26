@@ -53,7 +53,7 @@ app.post("/client", function(req, res) {
   dataBase[idPhone].bonusIndex = Number(req.body.bonusIndex);
   dataBase[idPhone].percent = Number(req.body.percent);
   var bonus = Number(req.body.bonus) / dataBase[idPhone].bonusIndex;
-  var percent = (Math.round(bonus) * Number(req.body.percent)) / 100;
+  var percent = (Number(req.body.bonus) * Number(req.body.percent)) / 100;
 
   if (req.body.action === "deposit") {
     dataBase[idPhone].bonus += Math.round(bonus);

@@ -13,7 +13,9 @@
     <div class="ui warning huge message">
       <div class="header"><%= data.name%></div>
       <p class="ui sub header"><%= phNumber%></p>
+      <div class="ui orange tag label"><%= data.bonus%> Бонусов / <%= data.money%> <i class="ruble sign icon"></i></div>
     </div>
+    
     <form action="/client" method="POST">
       <div class="two fields">
         <div class="field">
@@ -48,12 +50,13 @@
                   </select>
           </div> 
         </div>
+        
         <div class="field">
             <input class="ui center aligned segment"
             id="bonuses"
             name="bonus"
             type="text"
-            placeholder="<%= data.bonus%> рублей"
+            placeholder="введите сумму к оплате в рублях"
             autocomplete="off"
             maxlength="7"
             size="10"

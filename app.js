@@ -11,12 +11,14 @@ var dataBase = {
   79059847682: {
     name: "Сергей Германов",
     bonus: 1000,
+    money: 1000,
     bonusIndex: 5,
     percent: 10
   },
   79039109829: {
     name: "Алексей Германов",
     bonus: 3000,
+    money: 1000,
     bonusIndex: 10,
     percent: 25
   }
@@ -57,8 +59,10 @@ app.post("/client", function(req, res) {
 
   if (req.body.action === "deposit") {
     dataBase[idPhone].bonus += Math.round(bonus);
+    dataBase[idPhone].money += Number(req.body.bonus);
   } else {
     dataBase[idPhone].bonus -= Math.round(percent);
+    dataBase[idPhone].money += Number(req.body.bonus) - Math.round(bonus);
   }
   res.redirect("/client");
 });
@@ -74,12 +78,11 @@ app.post("/create", function(req, res) {
   var bonus = Number(req.body.bonus) / Number(req.body.bonusIndex);
 
   dataBase[idPhone] = req.body;
-
+  dataBase[idPhone].money = Number(req.body.bonus);
   dataBase[idPhone].bonusIndex = Number(req.body.bonusIndex);
   dataBase[idPhone].percent = Number(req.body.percent);
   dataBase[idPhone].bonus = bonus;
 
-  console.log(dataBase);
   if (dataBase[idPhone]) {
     res.redirect("/");
   } else {

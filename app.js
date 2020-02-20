@@ -62,7 +62,7 @@ app.post("/client", function(req, res) {
     dataBase[idPhone].money += Number(req.body.bonus);
   } else {
     dataBase[idPhone].bonus -= Math.round(percent);
-    dataBase[idPhone].money += Number(req.body.bonus) - Math.round(bonus);
+    dataBase[idPhone].money += Number(req.body.bonus) - Math.round(percent);
   }
   res.redirect("/client");
 });

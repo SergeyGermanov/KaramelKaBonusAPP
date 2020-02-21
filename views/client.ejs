@@ -3,8 +3,10 @@
 <script>
      $(document).ready(function() {
         $("#select").dropdown();
-      });
-  
+        $('.message .close').on('click', function(){
+     $(this).closest('.message').transition('fade');
+         });
+   });
 </script>
 
 <div class="ui container">
@@ -52,7 +54,7 @@
         </div>
         
         <div class="field">
-            <input class="ui center aligned segment"
+          <input class="ui center aligned segment"
             id="bonuses"
             name="bonus"
             type="text"
@@ -62,9 +64,35 @@
             size="10"
             required
           />
+          <%if(typeof message != 'undefined' && JSON.stringify(message) !== '{}' && message.action == 'withdraw') {%>
+          <div class="ui warning message">
+            <i class="close icon"></i>
+            <div class="header">
+              Обшая сумма к оплате: <%= message.fullPay%><i class="ruble sign icon"></i>
+            </div>
+            <ul class="list">
+              <li><strong><%= message.bonus%> Бонусов</strong> списано</li>
+              <li><strong><%= message.pay%><i class="ruble sign icon"></i></strong> к оплате</li>
+            </ul>
+          </div>
+          <%} else if(typeof message != 'undefined' && JSON.stringify(message) !== '{}' && message.action == 'deposit') {%>
+          <div class="ui info message">
+            <i class="close icon"></i>
+            <div class="header">
+              Обшая сумма оплаты: <%= message.fullPay%><i class="ruble sign icon"></i>
+            </div>
+            <ul class="list">
+              <li><strong><%= message.bonus%> Бонусов</strong> добавлено</li>
+            </ul>
+          </div>
+          <%}%>
           </div>
           <div class="ui two buttons">
-            <button type="submit" id="withdraw" name="action" value="withdraw" class="ui basic red button">Списать</button>
+            <%if(data.bonus == 0) {%>
+            <button type="submit" id="withdraw" name="action" value="withdraw" class="ui basic disabled red button">Списать</button>
+            <%} else {%>
+              <button type="submit" id="withdraw" name="action" value="withdraw" class="ui basic red button">Списать</button>
+              <%}%>
             <button type="submit" id="deposit" name="action" value="deposit" class="ui basic green button">Начислить</button>
           </div>
         </form>

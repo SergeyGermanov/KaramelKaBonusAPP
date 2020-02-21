@@ -1,5 +1,6 @@
 const bodyParser = require("body-parser"),
   express = require("express"),
+  querystring = require("querystring"),
   app = express();
 
 app.set("port", process.env.PORT || 8080);
@@ -27,6 +28,7 @@ var dataBase = {
 var phNumber;
 var idPhone;
 var data;
+var message;
 
 app.get("/", function(req, res) {
   res.render("index");
@@ -45,7 +47,7 @@ app.post("/", function(req, res) {
 
 app.get("/client", function(req, res) {
   if (phNumber && data) {
-    res.render("client", { phNumber: phNumber, data: data });
+    res.render("client", { phNumber: phNumber, data: data, message: message });
   } else {
     res.redirect("/");
   }
@@ -56,14 +58,39 @@ app.post("/client", function(req, res) {
   dataBase[idPhone].percent = Number(req.body.percent);
   var bonus = Number(req.body.bonus) / dataBase[idPhone].bonusIndex;
   var percent = (Number(req.body.bonus) * Number(req.body.percent)) / 100;
+  var bonusPercent = dataBase[idPhone].bonus - Math.round(percent);
 
   if (req.body.action === "deposit") {
+    // message = {};
     dataBase[idPhone].bonus += Math.round(bonus);
     dataBase[idPhone].money += Number(req.body.bonus);
+    message = {
+      fullPay: req.body.bonus,
+      bonus: Math.round(bonus),
+      action: "deposit"
+    };
   } else {
-    dataBase[idPhone].bonus -= Math.round(percent);
-    dataBase[idPhone].money += Number(req.body.bonus) - Math.round(percent);
+    if (bonusPercent < 0) {
+      dataBase[idPhone].money += Math.abs(bonusPercent);
+      message = {
+        fullPay: req.body.bonus,
+        bonus: dataBase[idPhone].bonus,
+        pay: req.body.bonus - dataBase[idPhone].bonus,
+        action: "withdraw"
+      };
+      dataBase[idPhone].bonus = 0;
+    } else {
+      dataBase[idPhone].bonus -= Math.round(percent);
+      dataBase[idPhone].money += Number(req.body.bonus) - Math.round(percent);
+      message = {
+        fullPay: req.body.bonus,
+        bonus: Math.round(percent),
+        pay: Number(req.body.bonus) - Math.round(percent),
+        action: "withdraw"
+      };
+    }
   }
+
   res.redirect("/client");
 });
 

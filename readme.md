@@ -1,5 +1,8 @@
 # KaramelKaBonusApp
 
+http://karamel-ka.herokuapp.com/
+
+Test number: 9059847682
 
 Author: Sergey Germanov
 
